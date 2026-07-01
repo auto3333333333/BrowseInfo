@@ -1,0 +1,148 @@
+{
+  "title": "BrowserInfo 儀表板",
+  "menu": {
+    "theme": "切換主題",
+    "theme_tooltip": "切換主題",
+    "theme_to_light": "切換至淺色主題（目前設定：深色）",
+    "theme_to_dark": "切換至深色主題（目前設定：淺色）",
+    "disclaimer": "*請注意：本儀表板顯示的所有狀態及性能判定均取決於您目前的瀏覽器規範、隱私安全設定以及裝置硬體性能。瀏覽器不支援的項目將自動顯示為 N/A。"
+  },
+  "categories": {
+    "device": "裝置資訊",
+    "browser": "瀏覽器資訊",
+    "battery": "電池狀態",
+    "network": "網路連線",
+    "storage": "儲存空間",
+    "sensors": "感應器",
+    "gpu": "圖形硬體 (GPU)",
+    "screen": "螢幕與視窗",
+    "fingerprint": "瀏覽器指紋",
+    "media": "媒體裝置",
+    "performance": "表現",
+    "permissions": "API 權限"
+  },
+  "description": {
+    "browser": "瀏覽器",
+    "useragent": "使用者代理",
+    "language": "偏好語言",
+    "pdfviewer": "PDF 閱讀器",
+
+    "cpucore": "CPU 核心數",
+    "ram": "執行記憶體 (RAM)",
+    "platform": "執行平台",
+    "architecture": "系統架構",
+
+    "level":"剩餘電量",
+    "chargingstate":"充電狀態",
+
+    "status":"連線狀態",
+    "type":"網路類型",
+    "downlink":"下載速度",
+    "rtt":"往返時間 (RTT)",
+    
+    "screenresolution":"螢幕解析度",
+    "windowsize":"視窗尺寸",
+    "deviceorientation":"裝置方向",
+    "pixelratio":"像素比 (DPR)",
+    "displayrefreshrate":"螢幕更新率",
+
+    "vendor":"WebGL 廠商",
+    "render":"WebGL 渲染器",
+    "supported":"支援 WebGPU",
+    "adapter":"WebGPU 適配器",
+
+    "cookies":"Cookies",
+    "localstorage":"LocalStorage",
+    "indexeddb":"IndexedDB",
+    "quota":"儲存配額",
+    "usage":"已用空間",
+
+    "loadtime":"頁面載入耗時",
+    "jslimit":"JS 堆疊記憶體上限",
+    "jstotal":"JS 堆疊記憶體總計",
+    "jsused":"JS 堆疊記憶體已用",
+
+    "geolocation":"地理位置",
+    "notify":"桌面通知",
+    "camera":"相機",
+    "microphone":"麥克風",
+    
+    "foundcamera":"檢測到的相機數",
+    "foundmicrophones":"檢測到的麥克風數",
+    "foundspeakers":"檢測到的揚聲器數",
+    
+    "alpha":"方向角 (Alpha)",
+    "beta":"傾斜度 (Beta)",
+    "gamma":"傾斜度 (Gamma)",
+    "latitude":"緯度",
+    "longitude":"經度",
+    
+    "canvashash":"Canvas 哈希",
+    "audiohash":"Audio 哈希"
+  },
+  "buttons": {
+    "copy": "複製到剪貼簿",
+    "json": "匯出 JSON",
+    "csv": "匯出 CSV",
+    "pdf": "匯出 PDF"
+  },
+  "gpu": {
+    "unknown": "未知",
+    "notavailable": "不可用",
+    "active": "支援 (已啟用)",
+    "failed": "支援 (獲取失敗)"
+  },
+  "network_detail": {
+    "status": "連線狀態",
+    "type": "網路類型",
+    "speed": "預估通訊速度",
+    "rtt": "往返延遲 (RTT)",
+    "sim_title": "使用者環境流暢度判定",
+    "video": "4K 影片串流",
+    "gaming": "線上遊戲",
+    "saver": "省流量模式"
+  },
+  "gpu_detail": {
+    "max_texture": "最大紋理尺寸",
+    "extensions": "支援的 WebGL 擴充功能"
+  },
+  "storage": {
+    "available": "可用",
+    "unknown": "未知",
+    "blocked": "已封鎖",
+    "notsupported": "不支援",
+    "notavailable": "不可用 / 已封鎖"
+  },
+  "status": {
+    "live": "即時",
+    "detecting": "檢測中...",
+    "available": "可用",
+    "blocked": "已封鎖 / 已停用",
+    "unsupported": "不支援",
+    "unknown": "未知",
+    "online": "線上 (已連線)",
+    "offline": "離線 (已斷開)",
+    "na": "N/A",
+    "detail_title": "詳細報告"
+  },
+  "permission": {
+    "unsupported": "API 不支援",
+    "description": "顯示進階 Web API 的明確存取許可狀態。'granted' 意指網站可以無需彈出視窗提示直接使用該功能。",
+    "error": "不支援 / 錯誤"
+  },
+  "perf_detail": {
+    "timing_title": "頁面載入耗時分析",
+    "dns": "DNS 查詢耗時",
+    "tcp": "TCP 握手耗時",
+    "dom": "DOM 解析耗時",
+    "memory_title": "JS 堆疊記憶體使用情況",
+    "allocation": "記憶體分配使用率"
+  },
+  "errors": {
+    "unsupported": "不支援",
+    "denied": "權限被拒絕"
+  },
+  "alert": {
+    "copy": "已复制到剪贴板！"
+  }
+}

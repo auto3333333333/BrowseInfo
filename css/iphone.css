@@ -1,0 +1,105 @@
+/* iphone.css - Liquid Glass iOS Optimized Layout */
+
+/* 画面全体のスクロールバー非表示 & スクロールバウンスの調整 */
+html, body {
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+    overflow-x: hidden;
+    /* iOS特有のセーフエリア（ノッチやホームバー）に対応 */
+    padding-top: env(safe-area-inset-top);
+    padding-bottom: env(safe-area-inset-bottom);
+    padding-left: env(safe-area-inset-left);
+    padding-right: env(safe-area-inset-right);
+    -webkit-overflow-scrolling: touch; /* 滑らかなスクロール */
+}
+html::-webkit-scrollbar, body::-webkit-scrollbar {
+    display: none;
+}
+
+/* iOS向けのフォントと全体のパディング */
+body {
+    font-family: -apple-system, BlinkMacSystemFont, "SF Pro Text", "SF Pro Display", "Helvetica Neue", sans-serif;
+}
+
+.dashboard-container {
+    max-width: 100%;
+    padding: 16px;
+}
+
+/* モバイル向け1カラムグリッドレイアウト */
+.metrics-grid {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    margin-top: 20px;
+}
+
+/* iOS 26 Liquid Glass のカードデザイン調整 (角丸を大きく、ブラーを強く) */
+.glass-card {
+    border-radius: 28px !important;
+    padding: 20px !important;
+    background: rgba(255, 255, 255, 0.04) !important;
+    backdrop-filter: blur(40px) saturate(220%) !important;
+    -webkit-backdrop-filter: blur(40px) saturate(220%) !important;
+    border: 0.5px solid rgba(255, 255, 255, 0.12) !important; /* iOS風の極細ボーダー */
+}
+
+/* カードヘッダーと翻訳バッジの整列 */
+.card-header-actions {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 12px;
+    border-bottom: 0.5px solid var(--glass-border);
+    padding-bottom: 6px;
+}
+
+.card-locale-badge {
+    font-size: 0.65rem;
+    padding: 3px 8px;
+    border-radius: 8px;
+    font-weight: 600;
+    background: rgba(255, 255, 255, 0.08);
+}
+
+/* リストアイテムの調整（iOSのシステム設定風） */
+.metric-item {
+    padding: 14px 0 !important;
+    border-bottom: 0.5px solid rgba(255, 255, 255, 0.06) !important;
+}
+.metric-item:last-child {
+    border-bottom: none !important;
+}
+
+.label {
+    font-size: 0.9rem;
+}
+.value {
+    font-size: 0.95rem;
+    max-width: 160px;
+}
+
+/* カード内の溢れる文字列に対するスクロールバーも完全に非表示 */
+.scrollable {
+    overflow-x: auto;
+    scrollbar-width: none;
+}
+.scrollable::-webkit-scrollbar {
+    display: none;
+}
+
+/* 下部アクションバーをモバイル用に固定、または最適化 */
+.action-bar {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 10px;
+    margin-top: 24px;
+    padding: 16px !important;
+    border-radius: 24px !important;
+}
+.glass-btn {
+    padding: 12px 8px !important;
+    border-radius: 14px !important;
+    font-size: 0.85rem;
+    font-weight: 500;
+}

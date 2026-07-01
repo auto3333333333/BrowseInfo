@@ -1,0 +1,103 @@
+/* android.css - Liquid Glass Android Optimized Layout */
+
+/* 画面全体のスクロールバー非表示 */
+html, body {
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+    overflow-x: hidden;
+}
+html::-webkit-scrollbar, body::-webkit-scrollbar {
+    display: none;
+}
+
+/* Android向けの標準フォント */
+body {
+    font-family: "Roboto", "Noto Sans CJK JP", "Google Sans", sans-serif;
+}
+
+.dashboard-container {
+    max-width: 100%;
+    padding: 14px;
+}
+
+/* 垂直方向のブロック配置 */
+.metrics-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 12px;
+    margin-top: 16px;
+}
+
+/* Android風 Liquid Glass カード（角丸は少し控えめの16px〜20px、シャドウを少し強調） */
+.glass-card {
+    border-radius: 20px !important;
+    padding: 18px !important;
+    background: rgba(255, 255, 255, 0.02) !important;
+    backdrop-filter: blur(25px) saturate(180%) !important;
+    -webkit-backdrop-filter: blur(25px) saturate(180%) !important;
+    border: 1px solid rgba(255, 255, 255, 0.06) !important;
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.15) !important;
+}
+
+/* カードヘッダーと各情報翻訳バッジ */
+.card-header-actions {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 14px;
+    border-bottom: 1px solid var(--glass-border);
+    padding-bottom: 8px;
+}
+
+.card-locale-badge {
+    font-size: 0.7rem;
+    padding: 2px 6px;
+    border-radius: 6px;
+    background: rgba(56, 189, 248, 0.1);
+    color: var(--accent);
+    border: 1px solid rgba(56, 189, 248, 0.2);
+}
+
+/* マテリアルデザイン風のゆったりしたアイテム間隔 */
+.metric-item {
+    padding: 12px 0 !important;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.04) !important;
+}
+.metric-item:last-child {
+    border-bottom: none !important;
+}
+
+.label {
+    font-size: 0.88rem;
+    letter-spacing: 0.02em;
+}
+.value {
+    font-size: 0.92rem;
+    max-width: 170px;
+}
+
+/* 横スクロール領域のバー非表示 */
+.scrollable {
+    overflow-x: auto;
+    scrollbar-width: none;
+}
+.scrollable::-webkit-scrollbar {
+    display: none;
+}
+
+/* 下部アクションボタンエリアのレイアウト */
+.action-bar {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 8px;
+    margin-top: 20px;
+    padding: 12px !important;
+    border-radius: 16px !important;
+}
+.glass-btn {
+    padding: 14px 10px !important;
+    border-radius: 12px !important;
+    font-size: 0.88rem;
+    letter-spacing: 0.04em;
+    text-transform: uppercase; /* Android標準のボタンテキストスタイル */
+}

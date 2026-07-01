@@ -1,0 +1,148 @@
+{
+  "title": "BrowserInfo Dashboard",
+  "menu": {
+    "theme": "Toggle Theme",
+    "theme_tooltip": "Switch Themes",
+    "theme_to_light": "Switch to Light Theme (Current: Dark)",
+    "theme_to_dark": "Switch to Dark Theme (Current: Light)",
+    "disclaimer": "*Note: The metrics and simulation results displayed on this dashboard may vary based on your browser specifications, privacy settings, and device hardware. Unsupported parameters will fall back to N/A."
+  },
+  "categories": {
+    "device": "Device Information",
+    "browser": "Browser Information",
+    "battery": "Battery Status",
+    "network": "Network",
+    "storage": "Storage & Cookies",
+    "sensors": "Sensors & Location",
+    "gpu": "Graphics (GPU)",
+    "screen": "Screen & Window",
+    "fingerprint": "Fingerprints",
+    "media": "Media Devices",
+    "performance": "Performance & Memory",
+    "permissions": "Permissions"
+  },
+  "description": {
+    "browser": "Browser",
+    "useragent": "User Agent",
+    "language": "Language",
+    "pdfviewer": "PDF Viewer",
+
+    "cpucore": "CPU Cores",
+    "ram": "RAM",
+    "platform": "Platform",
+    "architecture": "Architecture",
+
+    "level":"Level",
+    "chargingstate":"Charging State",
+
+    "status":"Status",
+    "type":"Type",
+    "downlink":"Downlink",
+    "rtt":"RTT",
+    
+    "screenresolution":"Screen Resolution",
+    "windowsize":"Window Size",
+    "deviceorientation":"Device Orientation",
+    "pixelratio":"Pixel Ratio",
+    "displayrefreshrate":"Display Refresh Rate",
+
+    "vendor":"WebGL Vendor",
+    "render":"WebGL Renderer",
+    "supported":"WebGPU Supported",
+    "adapter":"WebGPU Adapter",
+
+    "cookies":"Cookies",
+    "localstorage":"LocalStorage",
+    "indexeddb":"IndexedDB",
+    "quota":"Storage Quota",
+    "usage":"Storage Usage",
+
+    "loadtime":"Page Load Time",
+    "jslimit":"JS Heap Limit",
+    "jstotal":"JS Heap Total",
+    "jsused":"JS Heap Used",
+
+    "geolocation":"Geolocation",
+    "notify":"Notifications",
+    "camera":"Camera",
+    "microphone":"Microphone",
+    
+    "foundcamera":"Cameras Found",
+    "foundmicrophones":"Microphones Found",
+    "foundspeakers":"Speakers Found",
+    
+    "alpha":"Orientation Alpha",
+    "beta":"Orientation Beta",
+    "gamma":"Orientation Gamma",
+    "latitude":"Latitude",
+    "longitude":"Longitude",
+    
+    "canvashash":"Canvas Hash",
+    "audiohash":"Audio Hash"
+  },
+  "buttons": {
+    "copy": "Copy to Clipboard",
+    "json": "Export JSON",
+    "csv": "Export CSV",
+    "pdf": "Export PDF"
+  },
+  "gpu": {
+    "unknown": "Unknown",
+    "notavailable": "Not Available",
+    "active": "Supported (Active)",
+    "failed": "Supported (Request Failed)"
+  },
+  "network_detail": {
+    "status": "Connection Status",
+    "type": "Network Type",
+    "speed": "Estimated Speed",
+    "rtt": "Round Trip Time (RTT)",
+    "sim_title": "Experience Simulation",
+    "video": "4K Video Streaming",
+    "gaming": "Online Gaming",
+    "saver": "Data Saver Mode"
+  },
+  "gpu_detail": {
+    "max_texture": "Max Texture Size",
+    "extensions": "Supported WebGL Extensions"
+  },
+  "storage": {
+    "available": "Available",
+    "unknown": "Unknown",
+    "blocked": "Blocked",
+    "notsupported": "Not Supported",
+    "notavailable": "Not Available / Blocked"
+  },
+  "status": {
+    "live": "Live",
+    "detecting": "Detecting...",
+    "available": "Available",
+    "blocked": "Blocked / Disabled",
+    "unsupported": "Not Supported",
+    "unknown": "Unknown",
+    "online": "Online (Connected)",
+    "offline": "Offline (Disconnected)",
+    "na": "N/A",
+    "detail_title": "Detailed Report"
+  },
+  "permission": {
+    "unsupported": "API Unsupported",
+    "description": "Shows the explicit permission states for advanced Web APIs. 'granted' indicates the site has direct access without popping up authorization prompts.",
+    "error": "Unsupported/Error"
+  },
+  "perf_detail": {
+    "timing_title": "Navigation Timing",
+    "dns": "DNS Lookup",
+    "tcp": "TCP Handshake",
+    "dom": "DOM Parsing",
+    "memory_title": "JS Heap Memory Usage",
+    "allocation": "Heap Allocation Usage"
+  },
+  "errors": {
+    "unsupported": "Not Supported",
+    "denied": "Permission Denied"
+  },
+  "alert": {
+    "copy": "Copy to Clipboard!"
+  }
+}

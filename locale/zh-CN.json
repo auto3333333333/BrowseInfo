@@ -1,0 +1,148 @@
+{
+  "title": "BrowserInfo 仪表盘",
+  "menu": {
+    "theme": "切换主题",
+    "theme_tooltip": "切换主题",
+    "theme_to_light": "切换至浅色主题（当前设置：深色）",
+    "theme_to_dark": "切换至深色主题（当前设置：浅色）",
+    "disclaimer": "*请注意：本仪表盘显示的所有状态及性能判定均取决于您当前的浏览器规范、隐私安全设置以及设备硬件性能。浏览器不支持的项目将自动显示为 N/A。"
+  },
+  "categories": {
+    "device": "设备信息",
+    "browser": "浏览器信息",
+    "battery": "电池状态",
+    "network": "网络连接",
+    "storage": "存储空间",
+    "sensors": "传感器",
+    "gpu": "图形硬件 (GPU)",
+    "screen": "屏幕与窗口",
+    "fingerprint": "浏览器指纹",
+    "media": "媒体设备",
+    "performance": "表现",
+    "permissions": "API 权限"
+  },
+  "description": {
+    "browser": "浏览器",
+    "useragent": "用户代理",
+    "language": "首选语言",
+    "pdfviewer": "PDF 阅读器",
+
+    "cpucore": "CPU 核心数",
+    "ram": "运行内存 (RAM)",
+    "platform": "运行平台",
+    "architecture": "系统架构",
+
+    "level":"剩余电量",
+    "chargingstate":"充电状态",
+
+    "status":"连接状态",
+    "type":"网络类型",
+    "downlink":"下载速度",
+    "rtt":"往返时间 (RTT)",
+    
+    "screenresolution":"屏幕分辨率",
+    "windowsize":"窗口尺寸",
+    "deviceorientation":"设备方向",
+    "pixelratio":"像素比 (DPR)",
+    "displayrefreshrate":"屏幕刷新率",
+
+    "vendor":"WebGL 厂商",
+    "render":"WebGL 渲染器",
+    "supported":"支持 WebGPU",
+    "adapter":"WebGPU 适配器",
+
+    "cookies":"Cookies",
+    "localstorage":"LocalStorage",
+    "indexeddb":"IndexedDB",
+    "quota":"存储配额",
+    "usage":"已用空间",
+
+    "loadtime":"页面加载耗时",
+    "jslimit":"JS 堆内存上限",
+    "jstotal":"JS 堆内存总计",
+    "jsused":"JS 堆内存已用",
+
+    "geolocation":"地理位置",
+    "notify":"桌面通知",
+    "camera":"摄像头",
+    "microphone":"麦克风",
+    
+    "foundcamera":"检测到的摄像头数",
+    "foundmicrophones":"检测到的麦克风数",
+    "foundspeakers":"检测到的扬声器数",
+    
+    "alpha":"方向角 (Alpha)",
+    "beta":"倾斜度 (Beta)",
+    "gamma":"倾斜度 (Gamma)",
+    "latitude":"纬度",
+    "longitude":"经度",
+    
+    "canvashash":"Canvas 哈希",
+    "audiohash":"Audio 哈希"
+  },
+  "buttons": {
+    "copy": "复制到剪贴板",
+    "json": "导出 JSON",
+    "csv": "导出 CSV",
+    "pdf": "导出 PDF"
+  },
+  "gpu": {
+    "unknown": "未知",
+    "notavailable": "不可用",
+    "active": "支持 (已启用)",
+    "failed": "支持 (获取失败)"
+  },
+  "network_detail": {
+    "status": "连接状态",
+    "type": "网络类型",
+    "speed": "预估通信速度",
+    "rtt": "往返延迟 (RTT)",
+    "sim_title": "用户环境流畅度判定",
+    "video": "4K 视频流媒体",
+    "gaming": "在线游戏",
+    "saver": "省流量模式"
+  },
+  "gpu_detail": {
+    "max_texture": "最大纹理尺寸",
+    "extensions": "支持的 WebGL 扩展功能"
+  },
+  "storage": {
+    "available": "可用",
+    "unknown": "未知",
+    "blocked": "已阻止",
+    "notsupported": "不支持",
+    "notavailable": "不可用 / 已阻止"
+  },
+  "status": {
+    "live": "实时",
+    "detecting": "检测中...",
+    "available": "可用",
+    "blocked": "已阻止 / 已禁用",
+    "unsupported": "不支持",
+    "unknown": "未知",
+    "online": "在线 (已连接)",
+    "offline": "离线 (已断开)",
+    "na": "N/A",
+    "detail_title": "详细报告"
+  },
+  "permission": {
+    "unsupported": "API 不支持",
+    "description": "显示高级 Web API 的显式访问许可状态。'granted' 意味着网站可以无需弹窗提示直接使用该功能。",
+    "error": "不支持 / 错误"
+  },
+  "perf_detail": {
+    "timing_title": "页面加载耗时分析",
+    "dns": "DNS 查询耗时",
+    "tcp": "TCP 握手耗时",
+    "dom": "DOM 解析耗时",
+    "memory_title": "JS 堆内存使用情况",
+    "allocation": "内存分配使用率"
+  },
+  "errors": {
+    "unsupported": "不支持",
+    "denied": "权限被拒绝"
+  },
+  "alert": {
+    "copy": "已複製到剪貼簿！"
+  }
+}

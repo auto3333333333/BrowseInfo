@@ -1,0 +1,148 @@
+{
+  "title": "BrowserInfo ダッシュボード",
+  "menu": {
+    "theme": "テーマ切り替え",
+    "theme_tooltip": "テーマを切り替える",
+    "theme_to_light": "ライトテーマに切り替える（現在の設定:ダーク）",
+    "theme_to_dark": "ダークテーマに切り替える（現在の設定:ライト）",
+    "disclaimer": "※当サイトで表示される各種ステータスや速度判定は、お使いのブラウザ仕様、セキュリティ設定、および端末のハードウェア性能によって変化します。ブラウザが非対応の項目は N/A と表示されます。"
+  },
+  "categories": {
+    "device": "デバイス情報",
+    "browser": "ブラウザ情報",
+    "battery": "バッテリー状態",
+    "network": "ネットワーク",
+    "storage": "ストレージ",
+    "sensors": "センサー",
+    "gpu": "グラフィックス (GPU)",
+    "screen": "画面とウィンドウ",
+    "fingerprint": "フィンガープリント",
+    "media": "メディアデバイス",
+    "performance": "パフォーマンス",
+    "permissions": "アクセス権限"
+  },
+  "description": {
+    "browser": "ブラウザ",
+    "useragent": "ユーザーエージェント",
+    "language": "言語",
+    "pdfviewer": "PDFビューア",
+
+    "cpucore": "CPUコア数",
+    "ram": "メモリ (RAM)",
+    "platform": "プラットフォーム",
+    "architecture": "アーキテクチャ",
+
+    "level":"残量",
+    "chargingstate":"充電状態",
+
+    "status":"状態",
+    "type":"接続タイプ",
+    "downlink":"ダウンロード速度",
+    "rtt":"応答速度 (RTT)",
+    
+    "screenresolution":"画面解像度",
+    "windowsize":"ウィンドウサイズ",
+    "deviceorientation":"デバイスの向き",
+    "pixelratio":"ピクセル比 (DPR)",
+    "displayrefreshrate":"リフレッシュレート",
+
+    "vendor":"WebGL ベンダー",
+    "render":"WebGL レンダラー",
+    "supported":"WebGPU 対応",
+    "adapter":"WebGPU アダプター",
+
+    "cookies":"クッキー",
+    "localstorage":"LocalStorage",
+    "indexeddb":"IndexedDB",
+    "quota":"割り当て容量",
+    "usage":"使用量",
+
+    "loadtime":"ページ読み込み時間",
+    "jslimit":"JSヒープ上限",
+    "jstotal":"JSヒープ合計",
+    "jsused":"JSヒープ使用量",
+
+    "geolocation":"位置情報",
+    "notify":"通知権限",
+    "camera":"カメラ",
+    "microphone":"マイク",
+    
+    "foundcamera":"検出されたカメラ数",
+    "foundmicrophones":"検出されたマイク数",
+    "foundspeakers":"検出されたスピーカー数",
+    
+    "alpha":"方位角 (Alpha)",
+    "beta":"傾き (Beta)",
+    "gamma":"傾き (Gamma)",
+    "latitude":"緯度",
+    "longitude":"経度",
+    
+    "canvashash":"Canvas ハッシュ",
+    "audiohash":"Audio ハッシュ"
+  },
+  "buttons": {
+    "copy": "クリップボードにコピー",
+    "json": "JSON形式で出力",
+    "csv": "CSV形式で出力",
+    "pdf": "PDF形式で出力"
+  },
+  "gpu": {
+    "unknown": "不明",
+    "notavailable": "利用不可",
+    "active": "対応 (有効)",
+    "failed": "対応 (リクエスト失敗)"
+  },
+  "network_detail": {
+    "status": "接続ステータス",
+    "type": "回線タイプ",
+    "speed": "推定通信速度",
+    "rtt": "往復遅延時間 (RTT)",
+    "sim_title": "ユーザー環境の快適度判定",
+    "video": "4K動画ストリーミング",
+    "gaming": "オンラインゲーム",
+    "saver": "データセーバーモード"
+  },
+  "gpu_detail": {
+    "max_texture": "最大テクスチャサイズ",
+    "extensions": "サポートされているWebGL拡張機能"
+  },
+  "storage": {
+    "available": "利用可能",
+    "unknown": "不明",
+    "blocked": "ブロック中",
+    "notsupported": "非対応",
+    "notavailable": "利用不可 / ブロック中"
+  },
+  "status": {
+    "live": "リアルタイム",
+    "detecting": "判定中...",
+    "available": "利用可能",
+    "blocked": "ブロック中 / 無効",
+    "unsupported": "非対応",
+    "unknown": "不明",
+    "online": "オンライン (接続中)",
+    "offline": "オフライン (切断)",
+    "na": "N/A",
+    "detail_title": "詳細レポート"
+  },
+  "permission": {
+    "unsupported": "API非対応",
+    "description": "ブラウザが提供する高度なAPIへのアクセス許可ステータスです。'granted'の場合はユーザーへの再確認なしで機能を実行できます。",
+    "error": "非対応 / エラー"
+  },
+  "perf_detail": {
+    "timing_title": "ナビゲーションタイミング",
+    "dns": "DNSルックアップ",
+    "tcp": "TCPハンドシェイク",
+    "dom": "DOMパース時間",
+    "memory_title": "JSヒープメモリ使用状況",
+    "allocation": "ヒープ割り当て使用率"
+  },
+  "errors": {
+    "unsupported": "非対応",
+    "denied": "アクセス拒否"
+  },
+  "alert": {
+    "copy": "クリップボードにコピーしました！"
+  }
+}

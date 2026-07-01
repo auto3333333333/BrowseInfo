@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title data-i18n="title">BrowserInfo - Liquid Glass Dashboard</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="manifest" href="manifest.json">
+    <link rel="stylesheet" href="css/desktop.css" id="device-style">
+</head>
+<div id="detail-overlay" class="overlay-container">
+    <div class="overlay-glass-window">
+        <header class="overlay-header">
+            <h2 id="overlay-title">Category Detail</h2>
+            <button id="overlay-close-btn" class="glass-btn close-btn">&times;</button>
+        </header>
+        <div class="overlay-body" id="overlay-content">
+            </div>
+    </div>
+</div>
+<body class="dark-theme">
+    
+    <div class="liquid-bg">
+        <div class="blob blob-1"></div>
+        <div class="blob blob-2"></div>
+        <div class="blob blob-3"></div>
+    </div>
+
+    <header class="glass-header">
+        <h1 class="brand-logo">BrowserInfo</h1>
+        <div class="controls">
+            <select id="lang-selector" class="glass-select">
+                <option value="ja">日本語</option>
+                <option value="en">English</option>
+                <option value="zh-CN">简体中文</option>
+                <option value="zh-TW">繁體中文</option>
+                <option value="ko">한국어</option>
+            </select>
+            <button id="theme-toggle" class="glass-btn" data-i18n-tooltip="menu.theme_tooltip" title="">
+                <span id="theme-icon">🌙</span>
+            </button>
+        </div>
+    </header>
+
+    <main class="dashboard-container">
+        
+        <section class="glass-card status-card">
+            <div class="card-header">
+                <h2 data-i18n="categories.device">Device Info</h2>
+                <span id="device-badge" class="badge" data-i18n="status.detecting">Detecting...</span>
+            </div>
+        </section>
+
+        <div class="metrics-grid">
+            
+            <section class="glass-card">
+                <h3 data-i18n="categories.browser">Browser Information</h3>
+                <div class="card-content">
+                    <div class="metric-item"><span class="label" data-i18n="description.browser">Browser</span><span class="value" id="br-name">--</span></div>
+                    <div class="metric-item"><span class="label" data-i18n="description.useragent">UserAgent</span><span class="value scrollable" id="br-ua">--</span></div>
+                    <div class="metric-item"><span class="label" data-i18n="description.language">Language</span><span class="value" id="br-lang">--</span></div>
+                    <div class="metric-item"><span class="label" data-i18n="description.pdfviewer">PDF Viewer</span><span class="value" id="br-pdf">--</span></div>
+                </div>
+            </section>
+
+            <section class="glass-card">
+                <h3 data-i18n="categories.device">Device Specs</h3>
+                <div class="card-content">
+                    <div class="metric-item"><span class="label" data-i18n="description.cpucore">CPU Cores</span><span class="value" id="dev-cores">--</span></div>
+                    <div class="metric-item"><span class="label" data-i18n="description.ram">RAM (Estimate)</span><span class="value" id="dev-mem">--</span></div>
+                    <div class="metric-item"><span class="label" data-i18n="description.platform">Platform</span><span class="value" id="dev-plat">--</span></div>
+                    <div class="metric-item"><span class="label" data-i18n="description.architecture">Architecture</span><span class="value" id="dev-arch">--</span></div>
+                </div>
+            </section>
+
+            <section class="glass-card" id="card-battery">
+                <h3 data-i18n="categories.battery">Battery Status</h3>
+                <div class="realtime-indicator" data-i18n="status.live">● Live</div>
+                <div class="card-content">
+                    <div class="metric-item"><span class="label" data-i18n="description.level">Level</span><span class="value" id="bat-level">--</span></div>
+                    <div class="metric-item"><span class="label" data-i18n="description.chargingstate">Charging State</span><span class="value" id="bat-charging">--</span></div>
+                </div>
+            </section>
+
+            <section class="glass-card clickable-card" data-detail="network">
+                <h3 data-i18n="categories.network">Network</h3>
+                <div class="realtime-indicator" data-i18n="status.live">● Live</div>
+                <div class="card-content">
+                    <div class="metric-item"><span class="label" data-i18n="description.status">Status</span><span class="value" id="net-online">--</span></div>
+                    <div class="metric-item"><span class="label" data-i18n="description.type">Type</span><span class="value" id="net-type">--</span></div>
+                    <div class="metric-item"><span class="label" data-i18n="description.downlink">Downlink</span><span class="value" id="net-downlink">--</span></div>
+                    <div class="metric-item"><span class="label" data-i18n="description.rtt">RTT</span><span class="value" id="net-rtt">--</span></div>
+                </div>
+            </section>
+
+            <section class="glass-card">
+                <h3 data-i18n="categories.screen">Screen & Window</h3>
+                <div class="realtime-indicator" data-i18n="status.live">● Live</div>
+                <div class="card-content">
+                    <div class="metric-item"><span class="label" data-i18n="description.screenresolution">Screen Resolution</span><span class="value" id="scr-res">--</span></div>
+                    <div class="metric-item"><span class="label" data-i18n="description.windowsize">Window Size</span><span class="value" id="scr-win">--</span></div>
+                    <div class="metric-item"><span class="label" data-i18n="description.deviceorientation">Device Orientation</span><span class="value" id="scr-orient">--</span></div>
+                    <div class="metric-item"><span class="label" data-i18n="description.pixelratio">Pixel Ratio</span><span class="value" id="scr-dpr">--</span></div>
+                    <div class="metric-item"><span class="label" data-i18n="description.displayrefreshrate">Display Refresh Rate</span><span class="value" id="scr-fps">-- FPS</span></div>
+                    
+                </div>
+            </section>
+
+            <section class="glass-card clickable-card" data-detail="gpu">
+                <h3 data-i18n="categories.gpu">Graphics (GPU)</h3>
+                <div class="card-content">
+                    <div class="metric-item"><span class="label" data-i18n="description.vendor">WebGL Vendor</span><span class="value scrollable" id="gpu-vendor">--</span></div>
+                    <div class="metric-item"><span class="label" data-i18n="description.render">WebGL Renderer</span><span class="value scrollable" id="gpu-renderer">--</span></div>
+                    <div class="metric-item"><span class="label" data-i18n="description.supported">WebGPU Supported</span><span class="value" id="gpu-webgpu">--</span></div>
+                    <div class="metric-item"><span class="label" data-i18n="description.adapter">WebGPU Adapter</span><span class="value scrollable" id="gpu-adapter">--</span></div>
+                </div>
+            </section>
+
+            <section class="glass-card">
+                <h3 data-i18n="categories.storage">Storage & Cookies</h3>
+                <div class="card-content">
+                    <div class="metric-item"><span class="label" data-i18n="description.cookies">Cookies</span><span class="value" id="st-cookie">--</span></div>
+                    <div class="metric-item"><span class="label" data-i18n="description.localstorage">LocalStorage</span><span class="value" id="st-local">--</span></div>
+                    <div class="metric-item"><span class="label" data-i18n="description.indexeddb">IndexedDB</span><span class="value" id="st-idb">--</span></div>
+                    <div class="metric-item"><span class="label" data-i18n="description.quota">Storage Quota</span><span class="value" id="st-quota">--</span></div>
+                    <div class="metric-item"><span class="label" data-i18n="description.usage">Storage Usage</span><span class="value" id="st-usage">--</span></div>
+                </div>
+            </section>
+
+            <section class="glass-card clickable-card" data-detail="performance">
+                <h3 data-i18n="categories.performance">Performance & Memory</h3>
+                <div class="realtime-indicator" data-i18n="status.live">● Live</div>
+                <div class="card-content">
+                    <div class="metric-item"><span class="label" data-i18n="description.loadtime">Page Load Time</span><span class="value" id="perf-load">--</span></div>
+                    <div class="metric-item"><span class="label" data-i18n="description.jslimit">JS Heap Limit</span><span class="value" id="perf-limit">--</span></div>
+                    <div class="metric-item"><span class="label" data-i18n="description.jstotal">JS Heap Total</span><span class="value" id="perf-total">--</span></div>
+                    <div class="metric-item"><span class="label" data-i18n="description.jsused">JS Heap Used</span><span class="value" id="perf-used">--</span></div>
+                </div>
+            </section>
+
+            <section class="glass-card">
+                <h3 data-i18n="categories.permissions">API Permissions</h3>
+                <div class="card-content">
+                    <div class="metric-item"><span class="label" data-i18n="description.geolocation">Geolocation</span><span class="value" id="perm-geo">--</span></div>
+                    <div class="metric-item"><span class="label" data-i18n="description.notify">Notifications</span><span class="value" id="perm-notify">--</span></div>
+                    <div class="metric-item"><span class="label" data-i18n="description.camera">Camera</span><span class="value" id="perm-cam">--</span></div>
+                    <div class="metric-item"><span class="label" data-i18n="description.microphone">Microphone</span><span class="value" id="perm-mic">--</span></div>
+                </div>
+            </section>
+
+            <section class="glass-card clickable-card" data-detail="mediaDevices">
+                <h3 data-i18n="categories.media">Media Devices</h3>
+                <div class="card-content">
+                    <div class="metric-item"><span class="label" data-i18n="description.foundcamera">Cameras Found</span><span class="value" id="media-cam">--</span></div>
+                    <div class="metric-item"><span class="label" data-i18n="description.foundmicrophones">Microphones Found</span><span class="value" id="media-mic">--</span></div>
+                    <div class="metric-item"><span class="label" data-i18n="description.foundspeakers">Speakers Found</span><span class="value" id="media-spk">--</span></div>
+                </div>
+            </section>
+
+            <section class="glass-card">
+                <h3 data-i18n="categories.sensors">Sensors & Location</h3>
+                <div class="realtime-indicator" data-i18n="status.live">● Live</div>
+                <div class="card-content">
+                    <div class="metric-item"><span class="label" data-i18n="description.alpha">Orientation Alpha</span><span class="value" id="sns-alpha">0</span></div>
+                    <div class="metric-item"><span class="label" data-i18n="description.beta">Orientation Beta</span><span class="value" id="sns-beta">0</span></div>
+                    <div class="metric-item"><span class="label" data-i18n="description.gamma">Orientation Gamma</span><span class="value" id="sns-gamma">0</span></div>
+                    <div class="metric-item"><span class="label" data-i18n="description.latitude">Latitude</span><span class="value scrollable" id="sns-lat">--</span></div>
+                    <div class="metric-item"><span class="label" data-i18n="description.longitude">Longitude</span><span class="value scrollable" id="sns-lng">--</span></div>
+                </div>
+            </section>
+
+            <section class="glass-card">
+                <h3 data-i18n="categories.fingerprint">Device Fingerprint</h3>
+                <div class="card-content">
+                    <div class="metric-item"><span class="label" data-i18n="description.canvashash">Canvas Hash</span><span class="value scrollable code-text" id="fp-canvas">--</span></div>
+                    <div class="metric-item"><span class="label" data-i18n="description.audiohash">Audio Hash</span><span class="value scrollable code-text" id="fp-audio">--</span></div>
+                </div>
+            </section>
+
+        </div>
+
+        <section class="action-bar glass-card">
+            <button id="btn-export-pdf" class="glass-btn action-btn" data-i18n="buttons.pdf">Export PDF</button>
+            <button id="btn-export-json" class="glass-btn action-btn" data-i18n="buttons.json">JSON</button>
+            <button id="btn-export-csv" class="glass-btn action-btn" data-i18n="buttons.csv">CSV</button>
+            <button id="btn-copy" class="glass-btn action-btn" data-i18n="buttons.copy">Copy to Clipboard</button>
+        </section>
+        
+    </main>
+
+    <script type="module" src="main.js"></script>
+</body>
+<footer class="dashboard-footer">
+    <p data-i18n="menu.disclaimer">
+        </p>
+</footer>
+</html>

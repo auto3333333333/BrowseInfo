@@ -1,0 +1,21 @@
+{
+  "short_name": "BrowserInfo",
+  "name": "BrowserInfo - Liquid Glass Dashboard",
+  "icons": [
+    {
+      "src": "assets/icons/icon.jpg",
+      "type": "image/jpeg",
+      "sizes": "192x192"
+    },
+    {
+      "src": "assets/icons/icon.jpg",
+      "type": "image/jpeg",
+      "sizes": "512x512"
+    }
+  ],
+  "start_url": "./index.html",
+  "background_color": "#0f172a",
+  "theme_color": "#1e1b4b",
+  "display": "standalone",
+  "orientation": "any"
+}
