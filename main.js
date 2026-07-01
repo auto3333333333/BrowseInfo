@@ -509,171 +509,31 @@ function startFPSCounter() {
     requestAnimationFrame(calculateFPS);
 }
 
-/* export function initOverlayManager() {
-    const overlay = document.getElementById('detail-overlay');
-    const overlayTitle = document.getElementById('overlay-title');
-    const overlayContent = document.getElementById('overlay-content');
-    const closeBtn = document.getElementById('overlay-close-btn');
+function applyDeviceSpecificCSS() {
+    const themeLink = document.getElementById('theme-css');
+    if (!themeLink) return;
 
-    if (!overlay || !overlayTitle || !overlayContent) return;
+    const ua = navigator.userAgent.toLowerCase();
 
-    // クリック可能なすべてのカードにイベントをバインド
-    document.querySelectorAll('.clickable-card').forEach(card => {
-        card.addEventListener('click', async () => {
-            const targetCategory = card.getAttribute('data-detail');
-            
-            // ローディング表示
-            overlayContent.innerHTML = `<div class="metric-item">${localeManager.t('status.detecting')}</div>`;
-            overlay.classList.add('active');
+    // 💡 iPhone・iPadを検知した場合
+    if (ua.indexOf('iphone') !== -1 || ua.indexOf('ipad') !== -1) {
+        themeLink.setAttribute('href', 'css/iphone.css');
+        console.log("Device detected: iPhone/iPad. loaded iphone.css");
+    } 
+    // 💡 Androidを検知した場合
+    else if (ua.indexOf('android') !== -1) {
+        themeLink.setAttribute('href', 'css/android.css');
+        console.log("Device detected: Android. loaded android.css");
+    } 
+    // 💡 それ以外（PCなど）
+    else {
+        themeLink.setAttribute('href', 'css/desktop.css');
+        console.log("Device detected: Desktop. loaded desktop.css");
+    }
+}
 
-            // 各カテゴリに応じた詳細レポートの生成
-            switch (targetCategory) {
-                
-                // 1. API Permissions (権限)
-                case 'permissions': {
-                    overlayTitle.textContent = `${localeManager.t('categories.permissions')} - ${localeManager.t('status.detail_title')}`;
-                    const perms = await checkPermissions();
-                    overlayContent.innerHTML = `
-                        <div class="metric-item"><span class="label">Geolocation</span><span class="value">${perms.geolocation || 'N/A'}</span></div>
-                        <div class="metric-item"><span class="label">Notifications</span><span class="value">${perms.notifications || 'N/A'}</span></div>
-                        <div class="metric-item"><span class="label">Camera</span><span class="value">${perms.camera || 'N/A'}</span></div>
-                        <div class="metric-item"><span class="label">Microphone</span><span class="value">${perms.microphone || 'N/A'}</span></div>
-                        <div class="metric-item"><span class="label">Clipboard Read</span><span class="value">${perms['clipboard-read'] || 'N/A'}</span></div>
-                        <div class="desc-text" style="margin-top:20px; font-size:0.85rem; color:var(--text-muted); line-height:1.6;">
-                            ${localeManager.t('permission.description')}
-                        </div>
-                    `;
-                    break;
-                }
-
-                // 2. Network (ネットワーク詳細 ＆ クオリティ判定)
-                case 'network': {
-                    overlayTitle.textContent = `${localeManager.t('categories.network')} - ${localeManager.t('status.detail_title')}`;
-                    const net = getNetworkInfo();
-                    
-                    // 通信環境から快適度をシミュレート
-                    const rawDownlink = navigator.connection ? navigator.connection.downlink : 0;
-                    let videoStatus = "◯";
-                    let gameStatus = "◯";
-                    if (rawDownlink >= 20) { videoStatus = "◎ (4K)"; gameStatus = "◎ (Fast)"; }
-                    else if (rawDownlink < 5) { videoStatus = "△ (Low)"; gameStatus = "△ (Lag)"; }
-
-                    overlayContent.innerHTML = `
-                        <div class="metric-item"><span class="label">Connection Status</span><span class="value">${net.online}</span></div>
-                        <div class="metric-item"><span class="label">Network Type</span><span class="value" style="text-transform:uppercase;">${net.type}</span></div>
-                        <div class="metric-item"><span class="label">Estimated Speed</span><span class="value">${net.downlink}</span></div>
-                        <div class="metric-item"><span class="label">Round Trip Time (RTT)</span><span class="value">${net.rtt}</span></div>
-                        <div class="metric-item"><span class="label">Data Saver Mode</span><span class="value">${navigator.connection && navigator.connection.saveData ? 'Enabled' : 'Disabled'}</span></div>
-                        
-                        <h4 style="margin:24px 0 12px; font-size:1rem; color:var(--accent);">Experience Simulation</h4>
-                        <div class="metric-item"><span class="label">4K Video Streaming</span><span class="value">${videoStatus}</span></div>
-                        <div class="metric-item"><span class="label">Online Gaming</span><span class="value">${gameStatus}</span></div>
-                    `;
-                    break;
-                }
-
-                // 3. Graphics / GPU (WebGL拡張機能の全列挙)
-                case 'gpu': {
-                    overlayTitle.textContent = `${localeManager.t('categories.gpu')} - ${localeManager.t('status.detail_title')}`;
-                    
-                    const canvas = document.createElement('canvas');
-                    const gl = canvas.getContext('webgl') || canvas.getContext('experimental-webgl');
-                    let extListHTML = `<div class="desc-text">WebGL not supported</div>`;
-                    let maxTextureSize = 'Unknown';
-
-                    if (gl) {
-                        maxTextureSize = gl.getParameter(gl.MAX_TEXTURE_SIZE) + " x " + gl.getParameter(gl.MAX_TEXTURE_SIZE);
-                        const exts = gl.getSupportedExtensions();
-                        extListHTML = exts.map(ext => `<span class="card-locale-badge" style="margin:4px; display:inline-block; text-transform:none;">${ext}</span>`).join('');
-                    }
-
-                    overlayContent.innerHTML = `
-                        <div class="metric-item"><span class="label">Max Texture Size</span><span class="value">${maxTextureSize}</span></div>
-                        <h4 style="margin:24px 0 12px; font-size:1rem; color:var(--accent);">Supported WebGL Extensions</h4>
-                        <div style="background:rgba(0,0,0,0.2); padding:12px; border-radius:16px; max-height:200px; overflow-y:auto; word-break:break-all;">
-                            ${extListHTML}
-                        </div>
-                    `;
-                    break;
-                }
-
-                // 4. Media Devices (機材の製品名リスト)
-                case 'mediaDevices': {
-                    overlayTitle.textContent = `${localeManager.t('categories.media' || 'Media Devices')} - ${localeManager.t('status.detail_title')}`;
-                    
-                    try {
-                        // ハードウェアのデバイス一覧を取得
-                        const devices = await navigator.mediaDevices.enumerateDevices();
-                        let listHTML = '';
-
-                        devices.forEach((device, index) => {
-                            const label = device.label || `Device #${index + 1} (Name hidden due to lack of permission)`;
-                            let icon = '📁';
-                            if (device.kind === 'videoinput') icon = '📷';
-                            if (device.kind === 'audioinput') icon = '🎙️';
-                            if (device.kind === 'audiooutput') icon = '🔊';
-
-                            listHTML += `
-                                <div class="metric-item">
-                                    <span class="label">${icon} ${device.kind.replace('input', ' Input').replace('output', ' Output')}</span>
-                                    <span class="value" style="font-size:0.85rem; max-width:240px; text-align:right;">${label}</span>
-                                </div>
-                            `;
-                        });
-
-                        overlayContent.innerHTML = listHTML || `<div class="metric-item">No connected hardware devices found.</div>`;
-                    } catch (err) {
-                        overlayContent.innerHTML = `<div class="metric-item" style="color:#ef4444;">Failed to load devices: ${err.message}</div>`;
-                    }
-                    break;
-                }
-
-                // 5. Performance & Memory (読み込みタイムライン)
-                case 'performance': {
-                    overlayTitle.textContent = `${localeManager.t('categories.performance' || 'Performance')} - ${localeManager.t('status.detail_title')}`;
-                    
-                    let loadTimelineHTML = '';
-                    if (window.performance && window.performance.timing) {
-                        const t = window.performance.timing;
-                        const dnsTime = t.domainLookupEnd - t.domainLookupStart;
-                        const tcpTime = t.connectEnd - t.connectStart;
-                        const domTime = t.domComplete - t.domLoading;
-                        
-                        loadTimelineHTML = `
-                            <h4 style="margin:0 0 12px; font-size:1rem; color:var(--accent);">Navigation Timing</h4>
-                            <div class="metric-item"><span class="label">DNS Lookup</span><span class="value">${dnsTime} ms</span></div>
-                            <div class="metric-item"><span class="label">TCP Handshake</span><span class="value">${tcpTime} ms</span></div>
-                            <div class="metric-item"><span class="label">DOM Parsing</span><span class="value">${domTime} ms</span></div>
-                        `;
-                    }
-
-                    // メモリ使用率のシミュレーションバー
-                    let memoryBarHTML = '';
-                    if (performance.memory) {
-                        const m = performance.memory;
-                        const percent = Math.round((m.usedJSHeapSize / m.totalJSHeapSize) * 100);
-                        memoryBarHTML = `
-                            <h4 style="margin:24px 0 12px; font-size:1rem; color:var(--accent);">JS Heap Memory Usage</h4>
-                            <div style="background:rgba(255,255,255,0.1); height:12px; border-radius:6px; overflow:hidden; margin-bottom:8px;">
-                                <div style="background:var(--accent); width:${percent}%; height:100%; transition:width 0.5s ease;"></div>
-                            </div>
-                            <div class="metric-item"><span class="label">Heap Allocation Usage</span><span class="value">${percent}%</span></div>
-                        `;
-                    }
-
-                    overlayContent.innerHTML = (loadTimelineHTML + memoryBarHTML) || `<div>Performance API not fully supported.</div>`;
-                    break;
-                }
-            }
-        });
-    });
-
-    // 閉じる処理
-    closeBtn.addEventListener('click', () => overlay.classList.remove('active'));
-    overlay.addEventListener('click', (e) => {
-        if (e.target === overlay) overlay.classList.remove('active');
-    });
-} */
+// ページ読み込み時に即座に実行する
+applyDeviceSpecificCSS();
 
 // 最後に実行をキックする
 startFPSCounter();

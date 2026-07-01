@@ -103,3 +103,34 @@ body {
     font-size: 0.85rem;
     font-weight: 500;
 }
+
+/* ==========================================
+   iPhone / iPad (iOS) 専用スタイル
+   ========================================== */
+
+/* 💡 カードを縦一列にする（スマホ共通） */
+.dashboard-grid {
+    grid-template-columns: 1fr !important; 
+    gap: 16px !important;
+}
+
+/* 💡 全体の余白を狭くする */
+body {
+    /* env(safe-area-inset-*) で端末特有のノッチやバーの厚みを自動計算し、そこに 12px をプラスします */
+    padding-top: calc(env(safe-area-inset-top) + 12px) !important;
+    padding-bottom: calc(env(safe-area-inset-bottom) + 24px) !important; /* 下部は誤操作防止のため広めに */
+    padding-left: calc(env(safe-area-inset-left) + 12px) !important;
+    padding-right: calc(env(safe-area-inset-right) + 12px) !important;
+}
+
+/* 💡 オーバーレイ（ポップアップ窓）をスマホ画面いっぱいに広げる */
+.overlay-glass-window {
+    width: 95% !important;
+    max-height: 85vh !important; /* インジケータに被らないよう少し短めに */
+    padding: 20px !important;
+    /* 下部の閉じるボタンやコンテンツがバーに被らないように余白を追加 */
+    padding-bottom: calc(env(safe-area-inset-bottom) + 20px) !important;
+}
+
+/* 🍎 もしiPhone側だけで、文字の大きさを微調整したい！などのこだわりがあれば、
+   iphone.css 側にだけ追加の記述をすることで、Androidに影響を与えずカスタムできます */

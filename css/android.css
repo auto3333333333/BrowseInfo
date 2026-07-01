@@ -101,3 +101,33 @@ body {
     letter-spacing: 0.04em;
     text-transform: uppercase; /* Android標準のボタンテキストスタイル */
 }
+/* ==========================================
+   Android 専用スタイル
+   ========================================== */
+
+/* 💡 カードを縦一列にする（スマホ共通） */
+.dashboard-grid {
+    grid-template-columns: 1fr !important; 
+    gap: 16px !important;
+}
+
+/* 💡 Androidのシステムバー・戻る操作を意識した余白 */
+body {
+    padding: 16px;
+    /* Android下部のナビゲーションバー（3ボタンやジェスチャー線）との接触を防ぐため、下部を特に広く空ける */
+    padding-bottom: 42px !important; 
+}
+
+/* 💡 オーバーレイ（ポップアップ窓）の誤操作防止 */
+.overlay-glass-window {
+    width: 92% !important; /* 画面端からの「戻るスワイプ」の邪魔をしないよう、左右に少し隙間を作る */
+    max-height: 88vh !important;
+    padding: 20px !important;
+    /* ポップアップ内のスクロール最下部がシステムバーと重なって誤タップされないように底上げ */
+    margin-bottom: 20px !important;
+}
+
+/* 💡 Android特有のタップ時の青いハイライト（選択エフェクト）を消して、きれいなガラス感を保つ */
+* {
+    -webkit-tap-highlight-color: transparent;
+}
