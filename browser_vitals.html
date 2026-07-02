@@ -1,0 +1,779 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>BROWSER VITALS — ブラウザ生体情報 診断レポート</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600;700&family=IBM+Plex+Serif:ital,wght@0,500;0,600;0,700;1,500&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --paper:#EEF3EE;
+    --panel:#FFFFFF;
+    --ink:#182620;
+    --ink-soft:#5B6B62;
+    --line:#C4D0C7;
+    --line-soft:#DCE4DE;
+    --pulse:#2E7D5B;
+    --pulse-soft:#DCEEE4;
+    --alert:#B3402F;
+    --alert-soft:#F6E3DF;
+    --na:#9AA6A0;
+    --stamp:#8C6A3F;
+    --serif:'IBM Plex Serif', serif;
+    --mono:'IBM Plex Mono', monospace;
+    --radius:2px;
+  }
+
+  *{box-sizing:border-box;}
+  html{scroll-behavior:smooth;}
+  body{
+    margin:0;
+    background:
+      linear-gradient(var(--line-soft) 1px, transparent 1px) 0 0/100% 32px,
+      var(--paper);
+    color:var(--ink);
+    font-family:var(--mono);
+    -webkit-font-smoothing:antialiased;
+  }
+  @media (prefers-reduced-motion: reduce){
+    *{animation-duration:0.001ms !important; animation-iteration-count:1 !important; transition-duration:0.001ms !important; scroll-behavior:auto !important;}
+  }
+
+  a{color:inherit;}
+
+  /* ---------- HEADER ---------- */
+  header.masthead{
+    border-bottom:2px solid var(--ink);
+    padding:22px 28px 16px;
+    background:var(--paper);
+    position:relative;
+  }
+  .masthead-row{
+    display:flex;
+    justify-content:space-between;
+    align-items:flex-end;
+    flex-wrap:wrap;
+    gap:10px 24px;
+  }
+  .masthead-title{
+    font-family:var(--serif);
+    font-weight:700;
+    font-size:clamp(28px, 4.2vw, 46px);
+    letter-spacing:0.5px;
+    margin:0;
+    line-height:1;
+  }
+  .masthead-title small{
+    display:block;
+    font-family:var(--mono);
+    font-weight:500;
+    font-size:12px;
+    letter-spacing:3px;
+    color:var(--ink-soft);
+    margin-bottom:6px;
+    text-transform:uppercase;
+  }
+  .masthead-meta{
+    text-align:right;
+    font-size:11px;
+    line-height:1.7;
+    color:var(--ink-soft);
+    letter-spacing:0.5px;
+  }
+  .masthead-meta b{color:var(--ink);}
+  .status-badge{
+    display:inline-flex;
+    align-items:center;
+    gap:6px;
+    border:1px solid var(--pulse);
+    color:var(--pulse);
+    padding:3px 9px;
+    border-radius:20px;
+    font-size:10px;
+    letter-spacing:2px;
+    font-weight:600;
+  }
+  .status-dot{
+    width:7px;height:7px;border-radius:50%;background:var(--pulse);
+    animation:blink 1.6s ease-in-out infinite;
+  }
+  @keyframes blink{0%,100%{opacity:1;}50%{opacity:0.25;}}
+  .device-tag{
+    margin-top:8px;
+    font-size:11px;
+    color:var(--ink-soft);
+  }
+  .device-tag b{
+    color:var(--ink);
+    border-bottom:1px dashed var(--ink-soft);
+  }
+
+  /* ---------- TICKER ---------- */
+  .ticker{
+    display:grid;
+    grid-template-columns:repeat(6, 1fr);
+    border-bottom:2px solid var(--ink);
+    background:var(--panel);
+  }
+  .ticker .t-item{
+    padding:12px 16px;
+    border-right:1px solid var(--line);
+    min-width:0;
+  }
+  .ticker .t-item:last-child{border-right:none;}
+  .t-label{
+    display:block;
+    font-size:9px;
+    letter-spacing:1.5px;
+    color:var(--ink-soft);
+    text-transform:uppercase;
+    margin-bottom:4px;
+  }
+  .t-value{
+    display:block;
+    font-family:var(--serif);
+    font-weight:600;
+    font-size:18px;
+    color:var(--pulse);
+    white-space:nowrap;
+    overflow:hidden;
+    text-overflow:ellipsis;
+  }
+
+  /* ---------- LAYOUT ---------- */
+  .layout{
+    display:flex;
+    align-items:flex-start;
+  }
+  nav.section-nav{
+    position:sticky;
+    top:0;
+    width:210px;
+    flex:0 0 210px;
+    max-height:100vh;
+    overflow-y:auto;
+    border-right:2px solid var(--ink);
+    padding:18px 0;
+  }
+  nav.section-nav a{
+    display:flex;
+    gap:10px;
+    text-decoration:none;
+    padding:7px 20px;
+    font-size:12px;
+    letter-spacing:0.5px;
+    color:var(--ink-soft);
+    border-left:3px solid transparent;
+  }
+  nav.section-nav a:hover{
+    color:var(--ink);
+    background:var(--pulse-soft);
+    border-left-color:var(--pulse);
+  }
+  nav.section-nav a .n{font-weight:700;color:var(--stamp);}
+
+  main{
+    flex:1 1 auto;
+    padding:24px;
+    display:grid;
+    grid-template-columns:repeat(auto-fill, minmax(360px, 1fr));
+    gap:20px;
+    align-content:start;
+  }
+
+  /* ---------- CARD ---------- */
+  .card{
+    background:var(--panel);
+    border:1px solid var(--line);
+    border-radius:var(--radius);
+    scroll-margin-top:12px;
+  }
+  .card__head{
+    display:flex;
+    align-items:baseline;
+    gap:10px;
+    padding:12px 16px;
+    border-bottom:1px solid var(--ink);
+  }
+  .card__num{
+    font-family:var(--serif);
+    font-weight:700;
+    color:var(--stamp);
+    font-size:13px;
+  }
+  .card__en{
+    font-family:var(--serif);
+    font-weight:700;
+    font-size:16px;
+    letter-spacing:0.5px;
+  }
+  .card__jp{
+    margin-left:auto;
+    font-size:11px;
+    color:var(--ink-soft);
+    letter-spacing:1px;
+  }
+  .card__body{padding:4px 16px 10px;}
+
+  .field{
+    display:flex;
+    justify-content:space-between;
+    gap:14px;
+    padding:7px 0;
+    border-bottom:1px dashed var(--line-soft);
+    font-size:12.5px;
+  }
+  .field:last-child{border-bottom:none;}
+  .field__label{
+    color:var(--ink-soft);
+    flex:0 0 auto;
+    max-width:52%;
+  }
+  .field__value{
+    text-align:right;
+    font-weight:600;
+    word-break:break-all;
+    max-width:52%;
+  }
+  .field__value.na{color:var(--na); font-weight:500; font-style:italic;}
+  .field__value.warn{color:var(--alert);}
+  .field__value.ok{color:var(--pulse);}
+
+  .card__action{
+    margin:8px 0 4px;
+    padding:8px 10px;
+    width:100%;
+    background:var(--paper);
+    border:1px solid var(--ink);
+    color:var(--ink);
+    font-family:var(--mono);
+    font-weight:600;
+    font-size:11.5px;
+    letter-spacing:1px;
+    cursor:pointer;
+    border-radius:var(--radius);
+  }
+  .card__action:hover{background:var(--pulse); color:#fff; border-color:var(--pulse);}
+  .card__action:active{transform:translateY(1px);}
+  .card__note{
+    font-size:10.5px;
+    color:var(--ink-soft);
+    margin:4px 0 8px;
+    line-height:1.5;
+  }
+
+  /* ---------- FOOTER ---------- */
+  footer{
+    border-top:2px solid var(--ink);
+    padding:18px 28px 32px;
+    font-size:11px;
+    color:var(--ink-soft);
+    line-height:1.8;
+    max-width:900px;
+  }
+  footer b{color:var(--ink);}
+
+  /* ---------- MOBILE ---------- */
+  @media (max-width: 720px){
+    header.masthead{padding:16px 16px 12px;}
+    .masthead-title{font-size:26px;}
+    .masthead-meta{text-align:left; font-size:10px;}
+    .masthead-row{flex-direction:column; align-items:flex-start;}
+
+    .ticker{
+      grid-template-columns:repeat(2, 1fr);
+    }
+    .ticker .t-item{
+      border-bottom:1px solid var(--line);
+      padding:10px 12px;
+    }
+    .ticker .t-item:nth-child(2n){border-right:none;}
+    .t-value{font-size:15px;}
+
+    .layout{flex-direction:column;}
+    nav.section-nav{
+      position:sticky;
+      top:0;
+      width:100%;
+      flex:none;
+      max-height:none;
+      display:flex;
+      overflow-x:auto;
+      overflow-y:hidden;
+      border-right:none;
+      border-bottom:2px solid var(--ink);
+      background:var(--paper);
+      padding:10px 8px;
+      gap:6px;
+      z-index:5;
+      -webkit-overflow-scrolling:touch;
+    }
+    nav.section-nav a{
+      flex:0 0 auto;
+      border-left:none;
+      border:1px solid var(--line);
+      border-radius:20px;
+      padding:6px 12px;
+      background:var(--panel);
+      white-space:nowrap;
+    }
+    nav.section-nav a:hover{border-color:var(--pulse);}
+
+    main{
+      grid-template-columns:1fr;
+      padding:14px;
+      gap:14px;
+    }
+    .field{font-size:12px;}
+    .field__label,.field__value{max-width:56%;}
+    footer{padding:16px 16px 28px;}
+  }
+</style>
+</head>
+<body>
+
+<header class="masthead">
+  <div class="masthead-row">
+    <h1 class="masthead-title"><small>System Intake &amp; Diagnostic Report</small>BROWSER VITALS</h1>
+    <div class="masthead-meta">
+      <div class="status-badge"><span class="status-dot"></span>LIVE MONITORING</div><br>
+      Case ID: <b id="caseId">—</b><br>
+      Generated: <b id="genTime">—</b>
+    </div>
+  </div>
+  <div class="device-tag">推定デバイス: <b id="deviceTag">判定中…</b> ／ 表示モード: <b id="viewportTag">判定中…</b></div>
+</header>
+
+<div class="ticker" id="ticker">
+  <div class="t-item"><span class="t-label">Resolution</span><span class="t-value" id="t-res">—</span></div>
+  <div class="t-item"><span class="t-label">Connection</span><span class="t-value" id="t-net">—</span></div>
+  <div class="t-item"><span class="t-label">Battery</span><span class="t-value" id="t-batt">—</span></div>
+  <div class="t-item"><span class="t-label">CPU Cores</span><span class="t-value" id="t-cpu">—</span></div>
+  <div class="t-item"><span class="t-label">Online</span><span class="t-value" id="t-online">—</span></div>
+  <div class="t-item"><span class="t-label">Local Time</span><span class="t-value" id="t-time">—</span></div>
+</div>
+
+<div class="layout">
+  <nav class="section-nav" id="sectionNav"></nav>
+  <main id="main"></main>
+</div>
+
+<footer>
+  <b>プライバシーについて:</b> このレポートはお使いのブラウザ上のJavaScriptのみで生成され、外部サーバーへの送信・記録は一切行われません。位置情報／モーションセンサー／カメラ・マイクのラベル情報は、各セクションのボタンを押して明示的に許可した場合にのみ取得されます。ブラウザや設定によっては、プライバシー保護のため一部の項目が「取得不可」または匿名化された値になることがあります（正常な挙動です）。
+</footer>
+
+<script>
+(function(){
+  "use strict";
+
+  /* ---------- helpers ---------- */
+  const $ = id => document.getElementById(id);
+  function setVal(id, value, cls){
+    const el = $(id);
+    if(!el) return;
+    if(value === undefined || value === null || value === '' ){
+      el.textContent = '取得不可';
+      el.className = 'field__value na';
+      return;
+    }
+    el.textContent = value;
+    el.className = 'field__value' + (cls ? ' '+cls : '');
+  }
+  function na(id, note){ setVal(id, note || null); }
+  function bool(b){ return b ? '有効 (true)' : '無効 (false)'; }
+  function tryGet(fn, fallback){ try{ const v = fn(); return (v===undefined||v===null||v==='') ? fallback : v; }catch(e){ return fallback; } }
+  function bytes(n){
+    if(n===undefined||n===null||isNaN(n)) return null;
+    if(n > 1024*1024*1024) return (n/1024/1024/1024).toFixed(2)+' GB';
+    if(n > 1024*1024) return (n/1024/1024).toFixed(2)+' MB';
+    if(n > 1024) return (n/1024).toFixed(1)+' KB';
+    return n+' B';
+  }
+
+  /* ---------- section schema ---------- */
+  const SECTIONS = [
+    {num:'01', en:'IDENTITY', jp:'識別情報', id:'identity', fields:[
+      ['ua','User Agent'], ['appVersion','App Version'], ['platform','Platform'],
+      ['vendor','Vendor'], ['language','Language'], ['languages','Languages'],
+      ['cookieEnabled','Cookie Enabled'], ['dnt','Do Not Track'], ['gpc','Global Privacy Control'],
+      ['webdriver','Webdriver（自動化検出）'], ['pdfViewer','PDF Viewer Enabled']
+    ]},
+    {num:'02', en:'DISPLAY', jp:'画面・表示', id:'display', fields:[
+      ['screenRes','Screen Resolution'], ['availRes','Available Resolution'],
+      ['windowInner','Window Inner Size'], ['windowOuter','Window Outer Size'],
+      ['screenPos','Screen Position (X,Y)'], ['scrollPos','Scroll Position'],
+      ['colorDepth','Color Depth'], ['pixelDepth','Pixel Depth'], ['dpr','Device Pixel Ratio'],
+      ['orientation','Screen Orientation'], ['colorGamut','Color Gamut'], ['hdr','HDR Support'],
+      ['prefersDark','Prefers Color Scheme'], ['prefersReducedMotion','Prefers Reduced Motion']
+    ]},
+    {num:'03', en:'HARDWARE', jp:'ハードウェア', id:'hardware', fields:[
+      ['cores','CPU 論理コア数'], ['deviceMemory','Device Memory（概算）'],
+      ['maxTouch','Max Touch Points'], ['touchSupport','Touch Support'],
+      ['pointerType','Pointer / Hover'], ['gamepad','Gamepad 接続'], ['vibration','Vibration API']
+    ]},
+    {num:'04', en:'NETWORK', jp:'ネットワーク', id:'network', fields:[
+      ['online','Online Status'], ['connType','Connection Type'], ['effectiveType','Effective Type'],
+      ['downlink','Downlink (Mbps)'], ['rtt','RTT (ms)'], ['saveData','Save-Data Mode']
+    ]},
+    {num:'05', en:'BATTERY', jp:'バッテリー', id:'battery', fields:[
+      ['battLevel','Charge Level'], ['battCharging','Charging'],
+      ['battChargingTime','Time to Full'], ['battDischargingTime','Time to Empty']
+    ]},
+    {num:'06', en:'LOCATION', jp:'位置情報', id:'location', fields:[
+      ['geoLat','Latitude'], ['geoLng','Longitude'], ['geoAcc','Accuracy (m)'],
+      ['geoAlt','Altitude'], ['geoSpeed','Speed']
+    ], button:{id:'btnGeo', label:'位置情報の取得を許可する', note:'ボタンを押すとブラウザの許可ダイアログが表示されます。'}},
+    {num:'07', en:'SENSORS', jp:'モーションセンサー', id:'sensors', fields:[
+      ['orientAlpha','Orientation Alpha'], ['orientBeta','Orientation Beta'], ['orientGamma','Orientation Gamma'],
+      ['motionX','Acceleration X'], ['motionY','Acceleration Y'], ['motionZ','Acceleration Z']
+    ], button:{id:'btnMotion', label:'モーションセンサーを有効化する', note:'主にiPhone/Androidで動作します。PCでは取得できない場合があります。'}},
+    {num:'08', en:'STORAGE', jp:'ストレージ／Cookie', id:'storage', fields:[
+      ['localStorageAvail','LocalStorage'], ['sessionStorageAvail','SessionStorage'], ['indexedDBAvail','IndexedDB'],
+      ['cookieCount','Cookie 数'], ['quota','Storage Quota'], ['usage','Storage 使用量']
+    ]},
+    {num:'09', en:'PERMISSIONS', jp:'権限ステータス', id:'permissions', fields:[
+      ['permGeo','Geolocation'], ['permNotif','Notifications'], ['permCam','Camera'],
+      ['permMic','Microphone'], ['permClipboard','Clipboard Read'], ['permAccel','Accelerometer']
+    ]},
+    {num:'10', en:'MEDIA DEVICES', jp:'メディア入出力', id:'media', fields:[
+      ['audioIn','Audio Input 数'], ['videoIn','Video Input 数'], ['audioOut','Audio Output 数'], ['mediaLabels','デバイス名']
+    ], button:{id:'btnMedia', label:'デバイス名の取得を許可する', note:'カメラ／マイクへの一時アクセス許可が必要です（映像・音声は録画されません）。'}},
+    {num:'11', en:'GRAPHICS', jp:'グラフィックス', id:'graphics', fields:[
+      ['webglVendor','WebGL Vendor'], ['webglRenderer','WebGL Renderer'],
+      ['canvasSupport','Canvas 2D Support'], ['webgl2','WebGL2 Support']
+    ]},
+    {num:'12', en:'FEATURES', jp:'対応機能一覧', id:'features', fields:[
+      ['featSW','Service Worker'], ['featWasm','WebAssembly'], ['featClipboard','Clipboard API'],
+      ['featBluetooth','Web Bluetooth'], ['featUSB','WebUSB'], ['featSerial','Web Serial'],
+      ['featShare','Web Share'], ['featSpeech','Speech Synthesis'], ['featPush','Push API'],
+      ['featPayment','Payment Request'], ['featCredential','Credential Management'], ['featWakeLock','Screen Wake Lock']
+    ]},
+    {num:'13', en:'PERFORMANCE', jp:'パフォーマンス', id:'performance', fields:[
+      ['perfMemory','JS Heap（使用/上限）'], ['perfNow','Performance.now()'],
+      ['pageLoadTime','Page Load Time'], ['redirectCount','Redirect Count']
+    ]},
+    {num:'14', en:'PAGE', jp:'ページ情報', id:'page', fields:[
+      ['pageUrl','URL'], ['pageOrigin','Origin'], ['pageProtocol','Protocol'],
+      ['pageReferrer','Referrer'], ['pageTitle','Title'], ['pageCharset','Character Set']
+    ]},
+    {num:'15', en:'LOCALE', jp:'日時・ロケール', id:'locale', fields:[
+      ['currentTime','Current Time'], ['timezone','Timezone'], ['tzOffset','UTC Offset (min)'],
+      ['localeName','Locale'], ['calendarName','Calendar']
+    ]}
+  ];
+
+  /* ---------- render skeleton ---------- */
+  const main = $('main');
+  const nav = $('sectionNav');
+  let html = '';
+  let navHtml = '';
+  SECTIONS.forEach(sec=>{
+    navHtml += `<a href="#${sec.id}"><span class="n">${sec.num}</span>${sec.jp}</a>`;
+    html += `<section class="card" id="${sec.id}">
+      <div class="card__head"><span class="card__num">${sec.num}</span><span class="card__en">${sec.en}</span><span class="card__jp">${sec.jp}</span></div>
+      <div class="card__body">`;
+    if(sec.button){
+      html += `<button class="card__action" id="${sec.button.id}">${sec.button.label}</button><div class="card__note">${sec.button.note}</div>`;
+    }
+    sec.fields.forEach(([fid,label])=>{
+      html += `<div class="field"><span class="field__label">${label}</span><span class="field__value na" id="${fid}">未取得</span></div>`;
+    });
+    html += `</div></section>`;
+  });
+  main.innerHTML = html;
+  nav.innerHTML = navHtml;
+
+  /* ---------- header meta ---------- */
+  $('caseId').textContent = 'BV-' + Math.random().toString(36).slice(2,8).toUpperCase();
+  $('genTime').textContent = new Date().toLocaleString('ja-JP');
+
+  const ua = navigator.userAgent || '';
+  let deviceGuess = 'PC / デスクトップ';
+  if(/iPhone/.test(ua)) deviceGuess = 'iPhone';
+  else if(/iPad/.test(ua)) deviceGuess = 'iPad';
+  else if(/Android/.test(ua) && /Mobile/.test(ua)) deviceGuess = 'Android スマートフォン';
+  else if(/Android/.test(ua)) deviceGuess = 'Android タブレット';
+  $('deviceTag').textContent = deviceGuess;
+  function updateViewportTag(){
+    $('viewportTag').textContent = window.innerWidth <= 720 ? 'モバイルレイアウト' : 'デスクトップレイアウト';
+  }
+  updateViewportTag();
+  window.addEventListener('resize', updateViewportTag);
+
+  /* ================= 01 IDENTITY ================= */
+  setVal('ua', ua);
+  setVal('appVersion', tryGet(()=>navigator.appVersion));
+  setVal('platform', tryGet(()=>navigator.platform));
+  setVal('vendor', tryGet(()=>navigator.vendor));
+  setVal('language', tryGet(()=>navigator.language));
+  setVal('languages', tryGet(()=>(navigator.languages||[]).join(', ')));
+  setVal('cookieEnabled', bool(navigator.cookieEnabled));
+  setVal('dnt', navigator.doNotTrack === '1' ? '有効' : (navigator.doNotTrack === '0' ? '無効' : '未設定'));
+  setVal('gpc', 'globalPrivacyControl' in navigator ? bool(navigator.globalPrivacyControl) : null);
+  setVal('webdriver', bool(!!navigator.webdriver), navigator.webdriver ? 'warn' : 'ok');
+  setVal('pdfViewer', 'pdfViewerEnabled' in navigator ? bool(navigator.pdfViewerEnabled) : null);
+
+  /* ================= 02 DISPLAY ================= */
+  function updateDisplay(){
+    setVal('screenRes', `${screen.width} × ${screen.height} px`);
+    setVal('availRes', `${screen.availWidth} × ${screen.availHeight} px`);
+    setVal('windowInner', `${window.innerWidth} × ${window.innerHeight} px`);
+    setVal('windowOuter', `${window.outerWidth} × ${window.outerHeight} px`);
+    setVal('screenPos', tryGet(()=>`${window.screenX}, ${window.screenY}`));
+    setVal('scrollPos', `${Math.round(window.scrollX)}, ${Math.round(window.scrollY)}`);
+    setVal('colorDepth', screen.colorDepth + ' bit');
+    setVal('pixelDepth', screen.pixelDepth + ' bit');
+    setVal('dpr', window.devicePixelRatio);
+    setVal('orientation', tryGet(()=>screen.orientation.type + ' (' + screen.orientation.angle + '°)'));
+    let gamut = 'srgb';
+    if(matchMedia('(color-gamut: rec2020)').matches) gamut = 'rec2020';
+    else if(matchMedia('(color-gamut: p3)').matches) gamut = 'p3';
+    setVal('colorGamut', gamut);
+    setVal('hdr', matchMedia('(dynamic-range: high)').matches ? '対応 (high)' : '非対応 (standard)');
+    setVal('prefersDark', matchMedia('(prefers-color-scheme: dark)').matches ? 'ダーク' : 'ライト');
+    setVal('prefersReducedMotion', matchMedia('(prefers-reduced-motion: reduce)').matches ? '低減を希望' : '通常');
+    setVal('t-res', `${screen.width}×${screen.height}`);
+  }
+  updateDisplay();
+  window.addEventListener('resize', updateDisplay);
+
+  /* ================= 03 HARDWARE ================= */
+  setVal('cores', tryGet(()=>navigator.hardwareConcurrency));
+  setVal('deviceMemory', 'deviceMemory' in navigator ? navigator.deviceMemory + ' GB' : null);
+  setVal('maxTouch', tryGet(()=>navigator.maxTouchPoints, 0));
+  setVal('touchSupport', ('ontouchstart' in window) ? 'あり' : 'なし');
+  const hover = matchMedia('(hover: hover)').matches;
+  const pointerFine = matchMedia('(pointer: fine)').matches;
+  setVal('pointerType', `${hover ? 'hover可' : 'hover不可'} / ${pointerFine ? 'fine pointer' : 'coarse pointer'}`);
+  setVal('gamepad', tryGet(()=>{
+    const pads = navigator.getGamepads ? navigator.getGamepads() : [];
+    const connected = Array.prototype.filter.call(pads, p=>p).length;
+    return connected + ' 台接続中';
+  }, '0 台接続中'));
+  setVal('vibration', bool('vibrate' in navigator));
+  setVal('t-cpu', tryGet(()=>navigator.hardwareConcurrency + ' cores'));
+
+  /* ================= 04 NETWORK ================= */
+  const conn = navigator.connection || navigator.mozConnection || navigator.webkitConnection;
+  function updateNetwork(){
+    setVal('online', navigator.onLine ? 'オンライン' : 'オフライン', navigator.onLine ? 'ok' : 'warn');
+    $('t-online').textContent = navigator.onLine ? 'ONLINE' : 'OFFLINE';
+    if(conn){
+      setVal('connType', tryGet(()=>conn.type));
+      setVal('effectiveType', tryGet(()=>conn.effectiveType));
+      setVal('downlink', tryGet(()=>conn.downlink + ' Mbps'));
+      setVal('rtt', tryGet(()=>conn.rtt + ' ms'));
+      setVal('saveData', bool(!!conn.saveData));
+      $('t-net').textContent = tryGet(()=>conn.effectiveType.toUpperCase(), '—');
+    } else {
+      na('connType'); na('effectiveType'); na('downlink'); na('rtt'); na('saveData');
+      $('t-net').textContent = navigator.onLine ? 'ONLINE' : 'OFFLINE';
+    }
+  }
+  updateNetwork();
+  window.addEventListener('online', updateNetwork);
+  window.addEventListener('offline', updateNetwork);
+  if(conn && conn.addEventListener) conn.addEventListener('change', updateNetwork);
+
+  /* ================= 05 BATTERY ================= */
+  if(navigator.getBattery){
+    navigator.getBattery().then(batt=>{
+      function updateBattery(){
+        const pct = Math.round(batt.level*100);
+        setVal('battLevel', pct + ' %', pct <= 20 ? 'warn' : 'ok');
+        setVal('battCharging', bool(batt.charging));
+        setVal('battChargingTime', batt.chargingTime === Infinity ? '算出不可' : batt.chargingTime + ' 秒');
+        setVal('battDischargingTime', batt.dischargingTime === Infinity ? '算出不可' : batt.dischargingTime + ' 秒');
+        $('t-batt').textContent = pct + '%' + (batt.charging ? ' ⚡' : '');
+      }
+      updateBattery();
+      ['levelchange','chargingchange','chargingtimechange','dischargingtimechange'].forEach(ev=>batt.addEventListener(ev, updateBattery));
+    }).catch(()=>{
+      ['battLevel','battCharging','battChargingTime','battDischargingTime'].forEach(id=>na(id));
+      $('t-batt').textContent = '—';
+    });
+  } else {
+    ['battLevel','battCharging','battChargingTime','battDischargingTime'].forEach(id=>na(id, 'このブラウザは非対応'));
+    $('t-batt').textContent = '非対応';
+  }
+
+  /* ================= 06 LOCATION ================= */
+  $('btnGeo').addEventListener('click', ()=>{
+    if(!navigator.geolocation){ ['geoLat','geoLng','geoAcc','geoAlt','geoSpeed'].forEach(id=>na(id,'非対応')); return; }
+    $('btnGeo').textContent = '取得中…';
+    navigator.geolocation.getCurrentPosition(pos=>{
+      const c = pos.coords;
+      setVal('geoLat', c.latitude.toFixed(6), 'ok');
+      setVal('geoLng', c.longitude.toFixed(6), 'ok');
+      setVal('geoAcc', Math.round(c.accuracy) + ' m');
+      setVal('geoAlt', c.altitude !== null ? Math.round(c.altitude) + ' m' : null);
+      setVal('geoSpeed', c.speed !== null ? c.speed + ' m/s' : null);
+      $('btnGeo').textContent = '再取得する';
+    }, err=>{
+      ['geoLat','geoLng','geoAcc','geoAlt','geoSpeed'].forEach(id=>na(id, '許可拒否 / 取得失敗'));
+      $('btnGeo').textContent = '位置情報の取得を許可する';
+    }, {enableHighAccuracy:true, timeout:10000});
+  });
+
+  /* ================= 07 SENSORS ================= */
+  $('btnMotion').addEventListener('click', ()=>{
+    function bind(){
+      window.addEventListener('deviceorientation', e=>{
+        setVal('orientAlpha', e.alpha !== null ? e.alpha.toFixed(1) + '°' : null, 'ok');
+        setVal('orientBeta', e.beta !== null ? e.beta.toFixed(1) + '°' : null, 'ok');
+        setVal('orientGamma', e.gamma !== null ? e.gamma.toFixed(1) + '°' : null, 'ok');
+      });
+      window.addEventListener('devicemotion', e=>{
+        const a = e.acceleration || {};
+        setVal('motionX', a.x !== null && a.x !== undefined ? a.x.toFixed(2) : null, 'ok');
+        setVal('motionY', a.y !== null && a.y !== undefined ? a.y.toFixed(2) : null, 'ok');
+        setVal('motionZ', a.z !== null && a.z !== undefined ? a.z.toFixed(2) : null, 'ok');
+      });
+      $('btnMotion').textContent = '有効化しました（端末を動かしてください）';
+    }
+    if(typeof DeviceOrientationEvent !== 'undefined' && typeof DeviceOrientationEvent.requestPermission === 'function'){
+      DeviceOrientationEvent.requestPermission().then(state=>{
+        if(state === 'granted') bind();
+        else ['orientAlpha','orientBeta','orientGamma','motionX','motionY','motionZ'].forEach(id=>na(id,'許可拒否'));
+      }).catch(()=>{ ['orientAlpha','orientBeta','orientGamma','motionX','motionY','motionZ'].forEach(id=>na(id,'取得失敗')); });
+    } else if(typeof DeviceOrientationEvent !== 'undefined'){
+      bind();
+    } else {
+      ['orientAlpha','orientBeta','orientGamma','motionX','motionY','motionZ'].forEach(id=>na(id,'非対応'));
+    }
+  });
+
+  /* ================= 08 STORAGE ================= */
+  function testStorage(store){
+    try{ store.setItem('__t','1'); store.removeItem('__t'); return true; }catch(e){ return false; }
+  }
+  setVal('localStorageAvail', bool(testStorage(window.localStorage)));
+  setVal('sessionStorageAvail', bool(testStorage(window.sessionStorage)));
+  setVal('indexedDBAvail', bool('indexedDB' in window));
+  setVal('cookieCount', document.cookie ? document.cookie.split(';').filter(c=>c.trim()).length + ' 個' : '0 個');
+  if(navigator.storage && navigator.storage.estimate){
+    navigator.storage.estimate().then(est=>{
+      setVal('quota', bytes(est.quota));
+      setVal('usage', bytes(est.usage));
+    }).catch(()=>{ na('quota'); na('usage'); });
+  } else { na('quota','非対応'); na('usage','非対応'); }
+
+  /* ================= 09 PERMISSIONS ================= */
+  const permMap = {permGeo:'geolocation', permNotif:'notifications', permCam:'camera', permMic:'microphone', permClipboard:'clipboard-read', permAccel:'accelerometer'};
+  if(navigator.permissions && navigator.permissions.query){
+    Object.entries(permMap).forEach(([id,name])=>{
+      navigator.permissions.query({name}).then(res=>{
+        const label = {granted:'許可済み', denied:'拒否', prompt:'未確認（要求時に確認）'}[res.state] || res.state;
+        setVal(id, label, res.state === 'granted' ? 'ok' : (res.state === 'denied' ? 'warn' : null));
+        res.onchange = ()=> setVal(id, ({granted:'許可済み', denied:'拒否', prompt:'未確認'})[res.state] || res.state);
+      }).catch(()=> na(id,'クエリ非対応'));
+    });
+  } else {
+    Object.keys(permMap).forEach(id=>na(id,'Permissions API 非対応'));
+  }
+
+  /* ================= 10 MEDIA DEVICES ================= */
+  function countMedia(){
+    if(!navigator.mediaDevices || !navigator.mediaDevices.enumerateDevices){
+      ['audioIn','videoIn','audioOut'].forEach(id=>na(id,'非対応')); return;
+    }
+    navigator.mediaDevices.enumerateDevices().then(devices=>{
+      setVal('audioIn', devices.filter(d=>d.kind==='audioinput').length + ' 台');
+      setVal('videoIn', devices.filter(d=>d.kind==='videoinput').length + ' 台');
+      setVal('audioOut', devices.filter(d=>d.kind==='audiooutput').length + ' 台');
+    }).catch(()=>{ ['audioIn','videoIn','audioOut'].forEach(id=>na(id)); });
+  }
+  countMedia();
+  $('btnMedia').addEventListener('click', ()=>{
+    if(!navigator.mediaDevices || !navigator.mediaDevices.getUserMedia){ na('mediaLabels','非対応'); return; }
+    $('btnMedia').textContent = '許可を確認中…';
+    navigator.mediaDevices.getUserMedia({audio:true, video:true}).then(stream=>{
+      stream.getTracks().forEach(t=>t.stop());
+      navigator.mediaDevices.enumerateDevices().then(devices=>{
+        const labels = devices.filter(d=>d.label).map(d=>d.label);
+        setVal('mediaLabels', labels.length ? labels.join(' / ') : '取得できませんでした', 'ok');
+        countMedia();
+        $('btnMedia').textContent = '許可を取得しました';
+      });
+    }).catch(()=>{
+      setVal('mediaLabels', '許可拒否 / 取得失敗');
+      $('btnMedia').textContent = 'デバイス名の取得を許可する';
+    });
+  });
+
+  /* ================= 11 GRAPHICS ================= */
+  setVal('canvasSupport', bool(!!document.createElement('canvas').getContext('2d')));
+  (function(){
+    try{
+      const c = document.createElement('canvas');
+      const gl = c.getContext('webgl') || c.getContext('experimental-webgl');
+      setVal('webgl2', bool(!!c.getContext('webgl2')));
+      if(!gl){ na('webglVendor','WebGL非対応'); na('webglRenderer','WebGL非対応'); return; }
+      const dbg = gl.getExtension('WEBGL_debug_renderer_info');
+      if(dbg){
+        setVal('webglVendor', gl.getParameter(dbg.UNMASKED_VENDOR_WEBGL));
+        setVal('webglRenderer', gl.getParameter(dbg.UNMASKED_RENDERER_WEBGL));
+      } else {
+        setVal('webglVendor', gl.getParameter(gl.VENDOR));
+        setVal('webglRenderer', gl.getParameter(gl.RENDERER));
+      }
+    }catch(e){ na('webglVendor'); na('webglRenderer'); na('webgl2'); }
+  })();
+
+  /* ================= 12 FEATURES ================= */
+  setVal('featSW', bool('serviceWorker' in navigator));
+  setVal('featWasm', bool(typeof WebAssembly === 'object'));
+  setVal('featClipboard', bool('clipboard' in navigator));
+  setVal('featBluetooth', bool('bluetooth' in navigator));
+  setVal('featUSB', bool('usb' in navigator));
+  setVal('featSerial', bool('serial' in navigator));
+  setVal('featShare', bool('share' in navigator));
+  setVal('featSpeech', bool('speechSynthesis' in window));
+  setVal('featPush', bool('PushManager' in window));
+  setVal('featPayment', bool('PaymentRequest' in window));
+  setVal('featCredential', bool('credentials' in navigator));
+  setVal('featWakeLock', bool('wakeLock' in navigator));
+
+  /* ================= 13 PERFORMANCE ================= */
+  if(performance.memory){
+    setVal('perfMemory', bytes(performance.memory.usedJSHeapSize) + ' / ' + bytes(performance.memory.jsHeapSizeLimit));
+  } else { na('perfMemory', 'Chrome系のみ対応'); }
+  setVal('perfNow', performance.now().toFixed(2) + ' ms');
+  try{
+    const nav0 = performance.getEntriesByType('navigation')[0];
+    if(nav0){
+      setVal('pageLoadTime', Math.round(nav0.loadEventEnd - nav0.startTime) + ' ms');
+      setVal('redirectCount', nav0.redirectCount + ' 回');
+    } else if(performance.timing){
+      const t = performance.timing;
+      setVal('pageLoadTime', (t.loadEventEnd - t.navigationStart) + ' ms');
+      setVal('redirectCount', tryGet(()=>performance.navigation.redirectCount + ' 回'));
+    } else { na('pageLoadTime'); na('redirectCount'); }
+  }catch(e){ na('pageLoadTime'); na('redirectCount'); }
+
+  /* ================= 14 PAGE ================= */
+  setVal('pageUrl', location.href);
+  setVal('pageOrigin', location.origin);
+  setVal('pageProtocol', location.protocol);
+  setVal('pageReferrer', document.referrer || '(なし・直接アクセス)');
+  setVal('pageTitle', document.title);
+  setVal('pageCharset', document.characterSet);
+
+  /* ================= 15 LOCALE ================= */
+  function updateLocale(){
+    const now = new Date();
+    setVal('currentTime', now.toLocaleString('ja-JP'));
+    $('t-time').textContent = now.toLocaleTimeString('ja-JP');
+  }
+  setVal('timezone', tryGet(()=>Intl.DateTimeFormat().resolvedOptions().timeZone));
+  setVal('tzOffset', new Date().getTimezoneOffset() + ' 分');
+  setVal('localeName', tryGet(()=>Intl.DateTimeFormat().resolvedOptions().locale));
+  setVal('calendarName', tryGet(()=>Intl.DateTimeFormat().resolvedOptions().calendar));
+  updateLocale();
+  setInterval(updateLocale, 1000);
+
+})();
+</script>
+</body>
+</html>
